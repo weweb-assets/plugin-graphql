@@ -52,6 +52,33 @@
             v-model="query.displayBy"
         />
         <div class="graphql-query__row graphql-query__input">
+            <label class="graphql-query__label caption-s" for="graphql-variables"> Variables </label>
+            <button class="ww-editor-button -primary -small m-auto-left" @click="addVariable" :disabled="!query.url">
+                Add variable field
+            </button>
+        </div>
+        <div class="graphql-query__row -space-between" v-for="(variable, index) of query.variables" :key="index">
+            <div class="graphql-query__row-item">
+                <input
+                    type="text"
+                    class="graphql-query__input caption-m ww-editor-input"
+                    placeholder="Key"
+                    v-model="variable.key"
+                />
+            </div>
+            <div class="graphql-query__row-item">
+                <input
+                    type="text"
+                    class="graphql-query__input caption-m ww-editor-input"
+                    placeholder="value"
+                    v-model="variable.value"
+                />
+            </div>
+            <div class="graphql-query__input graphql-query__button-delete" @click="deleteVariable(index)">
+                <wwEditorIcon name="delete" small />
+            </div>
+        </div>
+        <div class="graphql-query__row graphql-query__input">
             <label class="graphql-query__label caption-s" for="graphql-headers"> Headers </label>
             <button class="ww-editor-button -primary -small m-auto-left" @click="addHeader" :disabled="!query.url">
                 Add header field
@@ -101,6 +128,7 @@ export default {
                 name: undefined,
                 displayBy: undefined,
                 headers: [],
+                variables: [],
             },
         };
     },
@@ -127,6 +155,12 @@ export default {
         },
         deleteHeader(index) {
             this.query.headers.splice(index, 1);
+        },
+        addVariable() {
+            this.query.variables.push({ key: '', value: '' });
+        },
+        deleteVariable(index) {
+            this.query.variables.splice(index, 1);
         },
     },
     created() {
