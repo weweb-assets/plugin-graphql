@@ -4,78 +4,89 @@
             <wwEditorFormInput
                 type="text"
                 name="url"
-                :value="query.url"
-                @input="setProp('url', $event)"
+                :model-value="query.url"
                 placeholder="https://api-url.com/graphql"
-                v-on:keyup.native.enter="$emit('next')"
                 large
+                @update:modelValue="setProp('url', $event)"
             />
         </wwEditorFormRow>
         <wwEditorFormRow label="Query" required>
             <wwCodeEditor
                 name="query"
-                :value="query.query"
-                @input="setProp('query', $event)"
+                :model-value="query.query"
                 large
                 language="graphql"
+                @update:modelValue="setProp('query', $event)"
             />
         </wwEditorFormRow>
         <wwEditorFormRow label="Variables">
-            <template slot="append-label">
-                <button class="ww-editor-button -primary -small m-auto-left m-bottom" @click="addElem('variables')">
+            <template #append-label>
+                <button
+                    type="button"
+                    class="ww-editor-button -primary -small m-auto-left m-bottom"
+                    @click="addElem('variables')"
+                >
                     Add variable field
                 </button>
             </template>
             <div
-                class="graphql-collection-edit__row -space-between m-bottom"
                 v-for="(variable, index) in query.variables"
                 :key="index"
+                class="graphql-collection-edit__row -space-between m-bottom"
             >
                 <wwEditorFormInput
                     type="text"
-                    :value="variable.key"
-                    @input="setElemProp('variables', index, { key: $event })"
+                    :model-value="variable.key"
                     placeholder="Key"
-                    v-on:keyup.native.enter="$emit('next')"
+                    @update:modelValue="setElemProp('variables', index, { key: $event })"
                 />
                 <wwEditorFormInput
                     type="text"
-                    :value="variable.value"
-                    @input="setElemProp('variables', index, { value: $event })"
+                    :model-value="variable.value"
                     placeholder="Value"
-                    v-on:keyup.native.enter="$emit('next')"
+                    @update:modelValue="setElemProp('variables', index, { value: $event })"
                 />
-                <button class="ww-editor-button -tertiary -small -icon -red" @click="deleteElem('variables', index)">
+                <button
+                    type="button"
+                    class="ww-editor-button -tertiary -small -icon -red"
+                    @click="deleteElem('variables', index)"
+                >
                     <wwEditorIcon class="ww-editor-button-icon" name="delete" small />
                 </button>
             </div>
         </wwEditorFormRow>
         <wwEditorFormRow label="Headers">
-            <template slot="append-label">
-                <button class="ww-editor-button -primary -small m-auto-left m-bottom" @click="addElem('headers')">
+            <template #append-label>
+                <button
+                    type="button"
+                    class="ww-editor-button -primary -small m-auto-left m-bottom"
+                    @click="addElem('headers')"
+                >
                     Add header field
                 </button>
             </template>
             <div
-                class="graphql-collection-edit__row -space-between m-bottom"
                 v-for="(header, index) in query.headers"
                 :key="index"
+                class="graphql-collection-edit__row -space-between m-bottom"
             >
                 <wwEditorFormInput
                     type="text"
-                    :value="header.key"
-                    @input="setElemProp('headers', index, { key: $event })"
+                    :model-value="header.key"
                     placeholder="Key"
-                    v-on:keyup.native.enter="$emit('next')"
+                    @update:modelValue="setElemProp('headers', index, { key: $event })"
                 />
                 <wwEditorFormInput
                     type="text"
-                    :value="header.value"
-                    @input="setElemProp('headers', index, { value: $event })"
+                    :model-value="header.value"
                     placeholder="Value"
-                    v-on:keyup.native.enter="$emit('next')"
+                    @update:modelValue="setElemProp('headers', index, { value: $event })"
                 />
-                <button class="ww-editor-button -tertiary -small -icon -red" @click="deleteElem('headers', index)">
+                <button
+                    type="button"
+                    class="ww-editor-button -tertiary -small -icon -red"
+                    @click="deleteElem('headers', index)"
+                >
                     <wwEditorIcon class="ww-editor-button-icon" name="delete" small />
                 </button>
             </div>
@@ -86,21 +97,10 @@
 <script>
 export default {
     props: {
-        plugin: { type: Object, required: true },
         config: { type: Object, required: true },
     },
-    watch: {
-        isSetup: {
-            immediate: true,
-            handler(value) {
-                this.$emit('update-is-valid', value);
-            },
-        },
-    },
+    emits: ['update:config'],
     computed: {
-        isSetup() {
-            return !!this.query.url && !!this.query.query;
-        },
         query() {
             return {
                 url: undefined,
@@ -134,7 +134,7 @@ export default {
             this.setProp(key, array);
         },
         setProp(key, value) {
-            this.$emit('update-config', { ...this.query, [key]: value });
+            this.$emit('update:config', { ...this.query, [key]: value });
         },
     },
 };
