@@ -1,3 +1,5 @@
+# How to configure a GraphQL API collection
+
 ⚠️ GraphQL APIs are all different from each other. Please make sure to refer to the documentation of the API you're using.
 
 1. You must first enter the whole URL required to fetch this API endpoint.
