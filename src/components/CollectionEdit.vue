@@ -1,7 +1,7 @@
 <template>
     <div class="graphql-collection-edit">
         <wwEditorFormRow label="Url" required>
-            <wwEditorFormInput
+            <wwEditorInputText
                 type="text"
                 name="url"
                 :model-value="query.url"
@@ -11,7 +11,7 @@
             />
         </wwEditorFormRow>
         <wwEditorFormRow label="Query" required>
-            <wwCodeEditor
+            <wwEditorInputCode
                 name="query"
                 :model-value="query.query"
                 large
@@ -34,13 +34,13 @@
                 :key="index"
                 class="graphql-collection-edit__row -space-between m-bottom"
             >
-                <wwEditorFormInput
+                <wwEditorInputText
                     type="text"
                     :model-value="variable.key"
                     placeholder="Key"
                     @update:modelValue="setElemProp('variables', index, { key: $event })"
                 />
-                <wwEditorFormInput
+                <wwEditorInputText
                     type="text"
                     :model-value="variable.value"
                     placeholder="Value"
@@ -70,13 +70,13 @@
                 :key="index"
                 class="graphql-collection-edit__row -space-between m-bottom"
             >
-                <wwEditorFormInput
+                <wwEditorInputText
                     type="text"
                     :model-value="header.key"
                     placeholder="Key"
                     @update:modelValue="setElemProp('headers', index, { key: $event })"
                 />
-                <wwEditorFormInput
+                <wwEditorInputText
                     type="text"
                     :model-value="header.value"
                     placeholder="Value"
