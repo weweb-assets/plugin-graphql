@@ -19,77 +19,72 @@
                 @update:modelValue="setProp('query', $event)"
             />
         </wwEditorFormRow>
-        <wwEditorFormRow label="Variables">
-            <template #append-label>
-                <button
-                    type="button"
-                    class="ww-editor-button -primary -small m-auto-left m-bottom"
-                    @click="addElem('variables')"
-                >
-                    Add variable field
-                </button>
+        <wwEditorInputRow
+            type="array"
+            :model-value="query.variables"
+            label="Variables"
+            bindable
+            @update:modelValue="setProp('variables', $event)"
+            @add-item="addElem('variables')"
+        >
+            <template #default="{ item, setItem }">
+                <wwEditorInputRow
+                    type="query"
+                    :model-value="item.key"
+                    label="Key"
+                    placeholder="Enter a value"
+                    bindable
+                    small
+                    @update:modelValue="setItem({ ...item, key: $event })"
+                />
+                <wwEditorInputRow
+                    type="query"
+                    :model-value="item.value"
+                    label="Value"
+                    placeholder="Enter a value"
+                    bindable
+                    small
+                    @update:modelValue="setItem({ ...item, value: $event })"
+                />
             </template>
-            <div
-                v-for="(variable, index) in query.variables"
-                :key="index"
-                class="graphql-collection-edit__row -space-between m-bottom"
-            >
-                <wwEditorInputText
-                    type="text"
-                    :model-value="variable.key"
-                    placeholder="Key"
-                    @update:modelValue="setElemProp('variables', index, { key: $event })"
+        </wwEditorInputRow>
+        <wwEditorInputRow
+            type="array"
+            :model-value="query.headers"
+            label="Headers"
+            bindable
+            @update:modelValue="setProp('headers', $event)"
+            @add-item="addElem('headers')"
+        >
+            <template #default="{ item, setItem }">
+                <wwEditorInputRow
+                    type="query"
+                    :model-value="item.key"
+                    label="Key"
+                    placeholder="Enter a value"
+                    bindable
+                    small
+                    @update:modelValue="setItem({ ...item, key: $event })"
                 />
-                <wwEditorInputText
-                    type="text"
-                    :model-value="variable.value"
-                    placeholder="Value"
-                    @update:modelValue="setElemProp('variables', index, { value: $event })"
+                <wwEditorInputRow
+                    type="query"
+                    :model-value="item.value"
+                    label="Value"
+                    placeholder="Enter a value"
+                    bindable
+                    small
+                    @update:modelValue="setItem({ ...item, value: $event })"
                 />
-                <button
-                    type="button"
-                    class="ww-editor-button -tertiary -small -icon -red"
-                    @click="deleteElem('variables', index)"
-                >
-                    <wwEditorIcon class="ww-editor-button-icon" name="delete" small />
-                </button>
-            </div>
-        </wwEditorFormRow>
-        <wwEditorFormRow label="Headers">
-            <template #append-label>
-                <button
-                    type="button"
-                    class="ww-editor-button -primary -small m-auto-left m-bottom"
-                    @click="addElem('headers')"
-                >
-                    Add header field
-                </button>
             </template>
-            <div
-                v-for="(header, index) in query.headers"
-                :key="index"
-                class="graphql-collection-edit__row -space-between m-bottom"
-            >
-                <wwEditorInputText
-                    type="text"
-                    :model-value="header.key"
-                    placeholder="Key"
-                    @update:modelValue="setElemProp('headers', index, { key: $event })"
-                />
-                <wwEditorInputText
-                    type="text"
-                    :model-value="header.value"
-                    placeholder="Value"
-                    @update:modelValue="setElemProp('headers', index, { value: $event })"
-                />
-                <button
-                    type="button"
-                    class="ww-editor-button -tertiary -small -icon -red"
-                    @click="deleteElem('headers', index)"
-                >
-                    <wwEditorIcon class="ww-editor-button-icon" name="delete" small />
-                </button>
-            </div>
+        </wwEditorInputRow>
+        <wwEditorFormRow label="Result key">
+            <wwEditorInputText
+                type="text"
+                :model-value="query.resultKey"
+                placeholder="result.key"
+                small
+                @update:modelValue="setProp('resultKey', $event)"
+            />
         </wwEditorFormRow>
     </div>
 </template>
@@ -104,7 +99,7 @@ export default {
         query() {
             return {
                 url: undefined,
-                query: `query MyQuery {
+                query: `query {
     posts {
         nodes {
             title
