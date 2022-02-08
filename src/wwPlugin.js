@@ -14,8 +14,10 @@ export default {
                 const { url, query, variables, headers, resultKey } = collection.config;
                 const data = await this.graphqlRequest(url, query, variables, headers);
                 return { data: _.get(data, resultKey, data), error: null };
-            } catch (error) {
-                return { error };
+            } catch (err) {
+                return {
+                    error: Object.getOwnPropertyNames(err).reduce((obj, key) => ({ ...obj, [key]: err[key] }), {}),
+                };
             }
         } else {
             return { data: null, error: null };
