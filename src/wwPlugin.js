@@ -12,7 +12,7 @@ export default {
         if (collection.mode === 'dynamic') {
             try {
                 const { url, query, variables, headers, resultKey } = collection.config;
-                const data = await this.graphqlRequest(url, query, variables, headers);
+                const data = await this._graphqlRequest(url, query, variables, headers);
                 return { data: _.get(data, resultKey, data), error: null };
             } catch (err) {
                 return {
@@ -23,12 +23,28 @@ export default {
             return { data: null, error: null };
         }
     },
-    async graphqlRequest(url, query, variables, headers) {
+    async graphqlRequest(url, query, variables, headers, wwUtils) {
+        /* wwEditor:start */
+        wwUtils.log({
+            label: 'Payload',
+            preview: {
+                Variables: computeList(variables),
+                Headers: computeList(headers),
+            },
+        });
+        /* wwEditor:end */
+        return this._graphqlRequest(url, query, variables, headers);
+    },
+    async _graphqlRequest(url, query, variables, headers) {
         const { data } = await axios.post(
             url,
-            { query, variables: (variables || []).reduce((obj, item) => ({ ...obj, [item.key]: item.value }), {}) },
-            { headers: (headers || []).reduce((obj, item) => ({ ...obj, [item.key]: item.value }), {}) }
+            { query, variables: computeList(variables) },
+            { headers: computeList(headers) }
         );
         return data.data;
     },
 };
+
+function computeList(list) {
+    return (list || []).reduce((obj, item) => ({ ...obj, [item.key]: item.value }), {});
+}
