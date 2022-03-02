@@ -25,13 +25,12 @@ export default {
     },
     async graphqlRequest(url, query, variables, headers, wwUtils) {
         /* wwEditor:start */
-        wwUtils.log({
-            label: 'Payload',
-            preview: {
-                Variables: computeList(variables),
-                Headers: computeList(headers),
-            },
-        });
+        if (wwUtils) {
+            wwUtils.log({
+                label: 'Payload',
+                preview: { Variables: computeList(variables), Headers: computeList(headers) },
+            });
+        }
         /* wwEditor:end */
         return this._graphqlRequest(url, query, variables, headers);
     },
