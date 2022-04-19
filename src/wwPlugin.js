@@ -23,7 +23,7 @@ export default {
             return { data: null, error: null };
         }
     },
-    async graphqlRequest(url, query, variables, headers, wwUtils) {
+    async graphqlRequest({ url, query, variables, headers }, wwUtils) {
         /* wwEditor:start */
         if (wwUtils) {
             wwUtils.log({
