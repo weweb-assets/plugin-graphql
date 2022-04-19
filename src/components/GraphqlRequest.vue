@@ -77,7 +77,7 @@
 export default {
     props: {
         plugin: { type: Object, required: true },
-        args: { type: Object, default: () => ({ url: null, query: null, variables: [], headers: [] }) },
+        args: { type: Object, required: true },
     },
     emits: ['update:args'],
     computed: {
@@ -88,10 +88,10 @@ export default {
             return this.args.query;
         },
         variables() {
-            return this.args.variables;
+            return this.args.variables || [];
         },
         headers() {
-            return this.args.headers;
+            return this.args.headers || [];
         },
     },
     methods: {
