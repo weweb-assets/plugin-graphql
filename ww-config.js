@@ -15,7 +15,7 @@ export default {
             isAsync: true,
             /* wwEditor:start */
             edit: () => import('./src/components/GraphqlRequest.vue'),
-            getIsValid([url, query]) {
+            getIsValid({ url, query }) {
                 return !!url && !!query;
             },
             /* wwEditor:end */
