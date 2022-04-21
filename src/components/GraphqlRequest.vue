@@ -77,44 +77,35 @@
 export default {
     props: {
         plugin: { type: Object, required: true },
-        args: { type: Array, default: () => [null, null, [], [], [], null] },
+        args: { type: Object, required: true },
     },
     emits: ['update:args'],
     computed: {
         url() {
-            return this.args[0];
+            return this.args.url;
         },
         query() {
-            return (
-                this.args[1] ||
-                `query {
-    posts {
-        nodes {
-            title
-        }
-    }
-}`
-            );
+            return this.args.query;
         },
         variables() {
-            return this.args[2];
+            return this.args.variables || [];
         },
         headers() {
-            return this.args[3];
+            return this.args.headers || [];
         },
     },
     methods: {
         setUrl(url) {
-            this.$emit('update:args', [url, this.query, this.variables, this.headers]);
+            this.$emit('update:args', { ...this.args, url });
         },
         setQuery(query) {
-            this.$emit('update:args', [this.url, query, this.variables, this.headers]);
+            this.$emit('update:args', { ...this.args, query });
         },
         setVariables(variables) {
-            this.$emit('update:args', [this.url, this.query, variables, this.headers]);
+            this.$emit('update:args', { ...this.args, variables });
         },
         setHeaders(headers) {
-            this.$emit('update:args', [this.url, this.query, this.variables, headers]);
+            this.$emit('update:args', { ...this.args, headers });
         },
     },
 };
