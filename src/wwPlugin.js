@@ -11,8 +11,8 @@ export default {
     async fetchCollection(collection) {
         if (collection.mode === 'dynamic') {
             try {
-                const { url, query, variables, headers, resultKey } = collection.config;
-                const data = await this._graphqlRequest(url, query, variables, headers);
+                const { url, query, variables, headers, resultKey, isWithCredentials } = collection.config;
+                const data = await this._graphqlRequest(url, query, variables, headers, isWithCredentials);
                 return { data: _.get(data, resultKey, data), error: null };
             } catch (err) {
                 return {
@@ -23,7 +23,7 @@ export default {
             return { data: null, error: null };
         }
     },
-    async graphqlRequest({ url, query, variables, headers }, wwUtils) {
+    async graphqlRequest({ url, query, variables, headers, isWithCredentials }, wwUtils) {
         /* wwEditor:start */
         if (wwUtils) {
             wwUtils.log({
@@ -32,13 +32,13 @@ export default {
             });
         }
         /* wwEditor:end */
-        return this._graphqlRequest(url, query, variables, headers);
+        return this._graphqlRequest(url, query, variables, headers, isWithCredentials);
     },
-    async _graphqlRequest(url, query, variables, headers) {
+    async _graphqlRequest(url, query, variables, headers, isWithCredentials) {
         const { data } = await axios.post(
             url,
             { query, variables: computeList(variables) },
-            { headers: computeList(headers) }
+            { headers: computeList(headers), withCredentials: isWithCredentials }
         );
         return data.data;
     },
