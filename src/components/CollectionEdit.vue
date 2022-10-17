@@ -85,7 +85,7 @@
             @update:modelValue="setProp('resultKey', $event)"
         />
     </wwEditorFormRow>
-    <wwEditorFormRow>
+    <wwEditorFormRow v-if="collection.mode === 'dynamic'">
         <div class="flex items-center">
             <wwEditorInputSwitch
                 :model-value="query.isWithCredentials"
@@ -100,6 +100,7 @@
 <script>
 export default {
     props: {
+        collection: { type: Object, required: true },
         config: { type: Object, required: true },
     },
     emits: ['update:config'],
