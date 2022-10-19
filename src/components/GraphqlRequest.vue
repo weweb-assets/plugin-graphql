@@ -71,6 +71,13 @@
             />
         </template>
     </wwEditorInputRow>
+    <wwEditorFormRow>
+        <div class="flex items-center">
+            <wwEditorInputSwitch :model-value="isWithCredentials" @update:modelValue="setIsWithCredentials" />
+            <div class="body-2 ml-2">Send credentials</div>
+            <wwEditorQuestionMark tooltip-position="top-left" tooltip-name="rest-api-credentials" class="ml-auto" />
+        </div>
+    </wwEditorFormRow>
 </template>
 
 <script>
@@ -93,6 +100,9 @@ export default {
         headers() {
             return this.args.headers || [];
         },
+        isWithCredentials() {
+            return this.args.isWithCredentials || false;
+        },
     },
     methods: {
         setUrl(url) {
@@ -103,6 +113,9 @@ export default {
         },
         setVariables(variables) {
             this.$emit('update:args', { ...this.args, variables });
+        },
+        setIsWithCredentials(isWithCredentials) {
+            this.$emit('update:args', { ...this.args, isWithCredentials });
         },
         setHeaders(headers) {
             this.$emit('update:args', { ...this.args, headers });
