@@ -22,7 +22,7 @@
         type="array"
         :model-value="query.variables"
         label="Variables"
-        bindable
+        :bindable="collection.mode === 'dynamic'"
         @update:modelValue="setProp('variables', $event)"
         @add-item="addElem('variables')"
     >
@@ -32,7 +32,7 @@
                 :model-value="item.key"
                 label="Key"
                 placeholder="Enter a value"
-                bindable
+                :bindable="collection.mode === 'dynamic'"
                 small
                 @update:modelValue="setItem({ ...item, key: $event })"
             />
@@ -41,7 +41,7 @@
                 :model-value="item.value"
                 label="Value"
                 placeholder="Enter a value"
-                bindable
+                :bindable="collection.mode === 'dynamic'"
                 small
                 @update:modelValue="setItem({ ...item, value: $event })"
             />
@@ -51,7 +51,7 @@
         type="array"
         :model-value="query.headers"
         label="Headers"
-        bindable
+        :bindable="collection.mode === 'dynamic'"
         @update:modelValue="setProp('headers', $event)"
         @add-item="addElem('headers')"
     >
@@ -61,7 +61,7 @@
                 :model-value="item.key"
                 label="Key"
                 placeholder="Enter a value"
-                bindable
+                :bindable="collection.mode === 'dynamic'"
                 small
                 @update:modelValue="setItem({ ...item, key: $event })"
             />
@@ -70,7 +70,7 @@
                 :model-value="item.value"
                 label="Value"
                 placeholder="Enter a value"
-                bindable
+                :bindable="collection.mode === 'dynamic'"
                 small
                 @update:modelValue="setItem({ ...item, value: $event })"
             />
