@@ -22,7 +22,7 @@
         type="array"
         :model-value="query.variables"
         label="Variables"
-        :bindable="collection.mode === 'dynamic'"
+        :bindable="collection.mode === 'dynamic' || mustUnbindVariables"
         @update:modelValue="setProp('variables', $event)"
         @add-item="addElem('variables')"
     >
@@ -47,11 +47,17 @@
             />
         </template>
     </wwEditorInputRow>
+    <wwEditorFormRow v-if="mustUnbindVariables">
+        <div class="flex items-center error">
+            <wwEditorIcon name="warning" />
+            <div class="body-2 ml-2">Variables can only be bound in dynamic collection mode</div>
+        </div>
+    </wwEditorFormRow>
     <wwEditorInputRow
         type="array"
         :model-value="query.headers"
         label="Headers"
-        :bindable="collection.mode === 'dynamic'"
+        :bindable="collection.mode === 'dynamic' || mustUnbindHeaders"
         @update:modelValue="setProp('headers', $event)"
         @add-item="addElem('headers')"
     >
@@ -76,6 +82,12 @@
             />
         </template>
     </wwEditorInputRow>
+    <wwEditorFormRow v-if="mustUnbindHeaders">
+        <div class="flex items-center error">
+            <wwEditorIcon name="warning" />
+            <div class="body-2 ml-2">Headers can only be bound in dynamic collection mode</div>
+        </div>
+    </wwEditorFormRow>
     <wwEditorFormRow label="Result key">
         <wwEditorInputText
             type="text"
@@ -121,6 +133,12 @@ export default {
                 ...this.config,
             };
         },
+        mustUnbindVariables() {
+            return this.collection.mode !== 'dynamic' && this.query.variables && this.query.variables.__wwtype;
+        },
+        mustUnbindHeaders() {
+            return this.collection.mode !== 'dynamic' && this.query.headers && this.query.headers.__wwtype;
+        },
     },
     methods: {
         addElem(key) {
@@ -144,3 +162,9 @@ export default {
     },
 };
 </script>
+
+<style scoped>
+.error {
+    color: var(--ww-color-red-500);
+}
+</style>
