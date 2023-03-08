@@ -22,7 +22,7 @@
         type="array"
         :model-value="query.variables"
         label="Variables"
-        :bindable="collection.mode === 'dynamic' || (query.variables && query.variables.__wwtype)"
+        :bindable="collection.mode === 'dynamic' || mustUnbindVariables"
         @update:modelValue="setProp('variables', $event)"
         @add-item="addElem('variables')"
     >
@@ -32,7 +32,7 @@
                 :model-value="item.key"
                 label="Key"
                 placeholder="Enter a value"
-                :bindable="collection.mode === 'dynamic' || (item.key && item.key.__wwtype)"
+                :bindable="collection.mode === 'dynamic'"
                 small
                 @update:modelValue="setItem({ ...item, key: $event })"
             />
@@ -41,17 +41,23 @@
                 :model-value="item.value"
                 label="Value"
                 placeholder="Enter a value"
-                :bindable="collection.mode === 'dynamic' || (item.value && item.value.__wwtype)"
+                :bindable="collection.mode === 'dynamic'"
                 small
                 @update:modelValue="setItem({ ...item, value: $event })"
             />
         </template>
     </wwEditorInputRow>
+    <wwEditorFormRow v-if="mustUnbindVariables">
+        <div class="flex items-center error">
+            <wwEditorIcon name="warning" />
+            <div class="body-2 ml-2">Variables can only be bound in dynamic collection mode</div>
+        </div>
+    </wwEditorFormRow>
     <wwEditorInputRow
         type="array"
         :model-value="query.headers"
         label="Headers"
-        :bindable="collection.mode === 'dynamic' || (query.headers && query.headers.__wwtype)"
+        :bindable="collection.mode === 'dynamic' || mustUnbindHeaders"
         @update:modelValue="setProp('headers', $event)"
         @add-item="addElem('headers')"
     >
@@ -61,7 +67,7 @@
                 :model-value="item.key"
                 label="Key"
                 placeholder="Enter a value"
-                :bindable="collection.mode === 'dynamic' || (item.key && item.key.__wwtype)"
+                :bindable="collection.mode === 'dynamic'"
                 small
                 @update:modelValue="setItem({ ...item, key: $event })"
             />
@@ -70,12 +76,18 @@
                 :model-value="item.value"
                 label="Value"
                 placeholder="Enter a value"
-                :bindable="collection.mode === 'dynamic' || (item.value && item.value.__wwtype)"
+                :bindable="collection.mode === 'dynamic'"
                 small
                 @update:modelValue="setItem({ ...item, value: $event })"
             />
         </template>
     </wwEditorInputRow>
+    <wwEditorFormRow v-if="mustUnbindHeaders">
+        <div class="flex items-center error">
+            <wwEditorIcon name="warning" />
+            <div class="body-2 ml-2">Headers can only be bound in dynamic collection mode</div>
+        </div>
+    </wwEditorFormRow>
     <wwEditorFormRow label="Result key">
         <wwEditorInputText
             type="text"
@@ -121,6 +133,12 @@ export default {
                 ...this.config,
             };
         },
+        mustUnbindVariables() {
+            return this.collection.mode !== 'dynamic' && this.query.variables && this.query.variables.__wwtype;
+        },
+        mustUnbindHeaders() {
+            return this.collection.mode !== 'dynamic' && this.query.headers && this.query.headers.__wwtype;
+        },
     },
     methods: {
         addElem(key) {
@@ -144,3 +162,9 @@ export default {
     },
 };
 </script>
+
+<style scoped>
+.error {
+    color: var(--ww-color-red-500);
+}
+</style>
