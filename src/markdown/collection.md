@@ -6,4 +6,6 @@
 2. Then, write the GraphQL query required to fetch the data you want.
 3. Optionally, you can add variables and HTTP headers.
 
+Be aware you must have to bind your value if your query variable require a Number.
+
 When you're done, click `next`!
