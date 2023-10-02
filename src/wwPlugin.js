@@ -24,14 +24,10 @@ export default {
         }
     },
     async graphqlRequest({ url, query, variables, headers, isWithCredentials }, wwUtils) {
-        /* wwEditor:start */
-        if (wwUtils) {
-            wwUtils.log({
-                label: 'Payload',
-                preview: { Variables: computeList(variables), Headers: computeList(headers) },
-            });
-        }
-        /* wwEditor:end */
+        wwUtils?.log('info', `[GraphQL] Executing request`, {
+            type: 'request',
+            preview: { Variables: computeList(variables), Headers: computeList(headers) },
+        });
         return this._graphqlRequest(url, query, variables, headers, isWithCredentials);
     },
     async _graphqlRequest(url, query, variables, headers, isWithCredentials) {
