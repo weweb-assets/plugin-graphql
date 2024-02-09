@@ -11,8 +11,8 @@ export default {
     async fetchCollection(collection) {
         if (collection.mode === 'dynamic') {
             try {
-                const { url, query, variables, headers, resultKey, isWithCredentials } = collection.config;
-                const data = await this._graphqlRequest(url, query, variables, headers, isWithCredentials);
+                const { url, query, variables, headers, resultKey, isWithCredentials, throwOnError } = collection.config;
+                const data = await this._graphqlRequest(url, query, variables, headers, isWithCredentials, throwOnError);
                 return { data: _.get(data, resultKey, data), error: null };
             } catch (err) {
                 return {
@@ -23,19 +23,24 @@ export default {
             return { data: null, error: null };
         }
     },
-    async graphqlRequest({ url, query, variables, headers, isWithCredentials }, wwUtils) {
+    async graphqlRequest({ url, query, variables, headers, isWithCredentials, throwOnError }, wwUtils) {
         wwUtils?.log('info', `[GraphQL] Executing request`, {
             type: 'request',
             preview: { Variables: computeList(variables), Headers: computeList(headers) },
         });
-        return this._graphqlRequest(url, query, variables, headers, isWithCredentials);
+        return this._graphqlRequest(url, query, variables, headers, isWithCredentials, throwOnError);
     },
-    async _graphqlRequest(url, query, variables, headers, isWithCredentials) {
-        const { data } = await axios.post(
+    async _graphqlRequest(url, query, variables, headers, isWithCredentials, throwOnError) {
+        const { data, errors } = await axios.post(
             url,
             { query, variables: computeList(variables) },
             { headers: computeList(headers), withCredentials: isWithCredentials }
         );
+        if (throwOnError && errors?.length) {
+            const error = new Error('GraphQL request failed');
+            error.errors = errors;
+            throw error;
+        }
         return data.data;
     },
 };

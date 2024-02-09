@@ -107,6 +107,15 @@
             <wwEditorQuestionMark tooltip-position="top-left" tooltip-name="rest-api-credentials" class="ml-auto" />
         </div>
     </wwEditorFormRow>
+    <wwEditorFormRow >
+        <div class="flex items-center">
+            <wwEditorInputSwitch
+                :model-value="!query.throwOnError"
+                @update:modelValue="setProp('throwOnError', !$event)"
+            />
+            <div class="body-2 ml-2">Ignore error</div>
+        </div>
+    </wwEditorFormRow>
 </template>
 
 <script>
@@ -130,6 +139,7 @@ export default {
                 headers: [],
                 variables: [],
                 isWithCredentials: false,
+                throwOnError: false,
                 ...this.config,
             };
         },

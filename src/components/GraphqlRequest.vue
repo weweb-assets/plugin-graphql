@@ -78,6 +78,15 @@
             <wwEditorQuestionMark tooltip-position="top-left" tooltip-name="rest-api-credentials" class="ml-auto" />
         </div>
     </wwEditorFormRow>
+    <wwEditorFormRow >
+        <div class="flex items-center">
+            <wwEditorInputSwitch
+                :model-value="!query.throwOnError"
+                @update:modelValue="setProp('throwOnError', !$event)"
+            />
+            <div class="body-2 ml-2">Ignore error</div>
+        </div>
+    </wwEditorFormRow>
 </template>
 
 <script>
@@ -103,6 +112,9 @@ export default {
         isWithCredentials() {
             return this.args.isWithCredentials || false;
         },
+        throwOnError() {
+            return this.args.throwOnError || false;
+        },
     },
     methods: {
         setUrl(url) {
@@ -116,6 +128,9 @@ export default {
         },
         setIsWithCredentials(isWithCredentials) {
             this.$emit('update:args', { ...this.args, isWithCredentials });
+        },
+        setThrowOnError(throwOnError) {
+            this.$emit('update:args', { ...this.args, throwOnError });
         },
         setHeaders(headers) {
             this.$emit('update:args', { ...this.args, headers });
