@@ -31,14 +31,14 @@ export default {
         return this._graphqlRequest(url, query, variables, headers, isWithCredentials, throwOnError);
     },
     async _graphqlRequest(url, query, variables, headers, isWithCredentials, throwOnError) {
-        const { data, errors } = await axios.post(
+        const { data } = await axios.post(
             url,
             { query, variables: computeList(variables) },
             { headers: computeList(headers), withCredentials: isWithCredentials }
         );
-        if (throwOnError && errors?.length) {
+        if (throwOnError && data.errors?.length) {
             const error = new Error('GraphQL request failed');
-            error.errors = errors;
+            error.errors = data.errors;
             throw error;
         }
         return data.data;
