@@ -110,10 +110,10 @@
     <wwEditorFormRow >
         <div class="flex items-center">
             <wwEditorInputSwitch
-                :model-value="!query.throwOnError"
-                @update:modelValue="setProp('throwOnError', !$event)"
+                :model-value="!query.isFullResponse"
+                @update:modelValue="setProp('isFullResponse', !$event)"
             />
-            <div class="body-2 ml-2">Ignore error</div>
+            <div class="body-2 ml-2">Return data only</div>
         </div>
     </wwEditorFormRow>
 </template>
@@ -139,7 +139,7 @@ export default {
                 headers: [],
                 variables: [],
                 isWithCredentials: false,
-                throwOnError: false,
+                isFullResponse: false,
                 ...this.config,
             };
         },

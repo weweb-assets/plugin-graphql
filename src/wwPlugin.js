@@ -11,8 +11,8 @@ export default {
     async fetchCollection(collection) {
         if (collection.mode === 'dynamic') {
             try {
-                const { url, query, variables, headers, resultKey, isWithCredentials, throwOnError } = collection.config;
-                const data = await this._graphqlRequest(url, query, variables, headers, isWithCredentials, throwOnError);
+                const { url, query, variables, headers, resultKey, isWithCredentials, isFullResponse } = collection.config;
+                const data = await this._graphqlRequest(url, query, variables, headers, isWithCredentials, isFullResponse);
                 return { data: _.get(data, resultKey, data), error: null };
             } catch (err) {
                 return {
@@ -23,25 +23,21 @@ export default {
             return { data: null, error: null };
         }
     },
-    async graphqlRequest({ url, query, variables, headers, isWithCredentials, throwOnError }, wwUtils) {
+    async graphqlRequest({ url, query, variables, headers, isWithCredentials, isFullResponse }, wwUtils) {
         wwUtils?.log('info', `[GraphQL] Executing request`, {
             type: 'request',
             preview: { Variables: computeList(variables), Headers: computeList(headers) },
         });
-        return this._graphqlRequest(url, query, variables, headers, isWithCredentials, throwOnError);
+        return this._graphqlRequest(url, query, variables, headers, isWithCredentials, isFullResponse);
     },
-    async _graphqlRequest(url, query, variables, headers, isWithCredentials, throwOnError) {
+    async _graphqlRequest(url, query, variables, headers, isWithCredentials, isFullResponse) {
         const { data } = await axios.post(
             url,
             { query, variables: computeList(variables) },
             { headers: computeList(headers), withCredentials: isWithCredentials }
         );
-        if (throwOnError && data.errors?.length) {
-            const error = new Error('GraphQL request failed');
-            error.errors = data.errors;
-            throw error;
-        }
-        return data.data;
+       
+        return isFullResponse ? data : data.data;
     },
 };
 
