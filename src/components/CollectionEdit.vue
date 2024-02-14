@@ -107,6 +107,15 @@
             <wwEditorQuestionMark tooltip-position="top-left" tooltip-name="rest-api-credentials" class="ml-auto" />
         </div>
     </wwEditorFormRow>
+    <wwEditorFormRow >
+        <div class="flex items-center">
+            <wwEditorInputSwitch
+                :model-value="!query.isFullResponse"
+                @update:modelValue="setProp('isFullResponse', !$event)"
+            />
+            <div class="body-2 ml-2">Return data only</div>
+        </div>
+    </wwEditorFormRow>
 </template>
 
 <script>
@@ -130,6 +139,7 @@ export default {
                 headers: [],
                 variables: [],
                 isWithCredentials: false,
+                isFullResponse: false,
                 ...this.config,
             };
         },

@@ -78,6 +78,15 @@
             <wwEditorQuestionMark tooltip-position="top-left" tooltip-name="rest-api-credentials" class="ml-auto" />
         </div>
     </wwEditorFormRow>
+    <wwEditorFormRow >
+        <div class="flex items-center">
+            <wwEditorInputSwitch
+                :model-value="!isFullResponse"
+                @update:modelValue="setIsFullResponse(!$event)"
+            />
+            <div class="body-2 ml-2">Return data only</div>
+        </div>
+    </wwEditorFormRow>
 </template>
 
 <script>
@@ -103,6 +112,9 @@ export default {
         isWithCredentials() {
             return this.args.isWithCredentials || false;
         },
+        isFullResponse() {
+            return this.args.isFullResponse || false;
+        },
     },
     methods: {
         setUrl(url) {
@@ -116,6 +128,9 @@ export default {
         },
         setIsWithCredentials(isWithCredentials) {
             this.$emit('update:args', { ...this.args, isWithCredentials });
+        },
+        setIsFullResponse(isFullResponse) {
+            this.$emit('update:args', { ...this.args, isFullResponse });
         },
         setHeaders(headers) {
             this.$emit('update:args', { ...this.args, headers });
