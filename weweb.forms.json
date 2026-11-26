@@ -1,0 +1,199 @@
+{
+    "schemaVersion": 1,
+    "features": {
+        "datasource": true
+    },
+    "collection": {
+        "fields": [
+            {
+                "key": "url",
+                "label": "URL",
+                "type": "text",
+                "required": true,
+                "placeholder": "https://api-url.com/graphql"
+            },
+            {
+                "key": "query",
+                "label": "Query",
+                "type": "source",
+                "language": "graphql",
+                "required": true,
+                "initial": "query {\n    posts {\n        nodes {\n            title\n        }\n    }\n}"
+            },
+            {
+                "key": "variables",
+                "label": "Variables",
+                "type": "list",
+                "bindableIn": "dynamicCollection",
+                "item": {
+                    "type": "record",
+                    "fields": [
+                        {
+                            "key": "key",
+                            "label": "Key",
+                            "type": "text",
+                            "placeholder": "Enter a value",
+                            "bindableIn": "dynamicCollection",
+                            "initial": ""
+                        },
+                        {
+                            "key": "value",
+                            "label": "Value",
+                            "type": "text",
+                            "placeholder": "Enter a value",
+                            "bindableIn": "dynamicCollection",
+                            "initial": ""
+                        }
+                    ]
+                }
+            },
+            {
+                "key": "headers",
+                "label": "Headers",
+                "type": "list",
+                "bindableIn": "dynamicCollection",
+                "item": {
+                    "type": "record",
+                    "fields": [
+                        {
+                            "key": "key",
+                            "label": "Key",
+                            "type": "text",
+                            "placeholder": "Enter a value",
+                            "bindableIn": "dynamicCollection",
+                            "initial": ""
+                        },
+                        {
+                            "key": "value",
+                            "label": "Value",
+                            "type": "text",
+                            "placeholder": "Enter a value",
+                            "bindableIn": "dynamicCollection",
+                            "initial": ""
+                        }
+                    ]
+                }
+            },
+            {
+                "key": "resultKey",
+                "label": "Result key",
+                "type": "text",
+                "placeholder": "result.key"
+            },
+            {
+                "key": "isWithCredentials",
+                "label": "Send credentials",
+                "type": "boolean",
+                "visibleIn": "dynamic",
+                "initial": false
+            },
+            {
+                "key": "isFullResponse",
+                "label": "Return full GraphQL response",
+                "type": "boolean",
+                "initial": false
+            }
+        ],
+        "summary": [
+            {
+                "field": "url",
+                "label": "URL",
+                "empty": "–"
+            },
+            {
+                "field": "query",
+                "label": "Query",
+                "empty": "–"
+            }
+        ]
+    },
+    "actions": [
+        {
+            "name": "GraphQL Request",
+            "code": "graphqlRequest",
+            "isAsync": true,
+            "validation": "requiredFields",
+            "form": {
+                "fields": [
+                    {
+                        "key": "url",
+                        "label": "URL",
+                        "type": "text",
+                        "required": true,
+                        "placeholder": "https://api-url.com/graphql",
+                        "bindable": true
+                    },
+                    {
+                        "key": "query",
+                        "label": "Query",
+                        "type": "source",
+                        "language": "graphql",
+                        "required": true
+                    },
+                    {
+                        "key": "variables",
+                        "label": "Variables",
+                        "type": "list",
+                        "bindable": true,
+                        "item": {
+                            "type": "record",
+                            "fields": [
+                                {
+                                    "key": "key",
+                                    "label": "Key",
+                                    "type": "text",
+                                    "placeholder": "Enter a value",
+                                    "bindable": true
+                                },
+                                {
+                                    "key": "value",
+                                    "label": "Value",
+                                    "type": "text",
+                                    "placeholder": "Enter a value",
+                                    "bindable": true
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "key": "headers",
+                        "label": "Headers",
+                        "type": "list",
+                        "bindable": true,
+                        "item": {
+                            "type": "record",
+                            "fields": [
+                                {
+                                    "key": "key",
+                                    "label": "Key",
+                                    "type": "text",
+                                    "placeholder": "Enter a value",
+                                    "bindable": true
+                                },
+                                {
+                                    "key": "value",
+                                    "label": "Value",
+                                    "type": "text",
+                                    "placeholder": "Enter a value",
+                                    "bindable": true
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "key": "isWithCredentials",
+                        "label": "Send credentials",
+                        "type": "boolean",
+                        "initial": false
+                    },
+                    {
+                        "key": "isFullResponse",
+                        "label": "Return full GraphQL response",
+                        "type": "boolean",
+                        "initial": false
+                    }
+                ]
+            }
+        }
+    ]
+}
